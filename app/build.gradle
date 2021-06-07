@@ -1,6 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id "io.gitlab.arturbosch.detekt" version "$detektVersion"
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -12,6 +16,9 @@ android {
         targetSdkVersion maxApiLevel.toInteger()
         versionCode appVersionCode.toInteger()
         versionName appVersionName
+
+        // Enabling multidex support.
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,22 +32,47 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+    buildToolsVersion "$buildToolsVersion"
 }
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation platform("com.google.firebase:firebase-bom:$firestoreBomVersion")
     implementation "androidx.core:core-ktx:$coreVersion"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "com.google.android.material:material:$materialVersion"
+    implementation "com.google.android.gms:play-services-maps:$playServicesMaps"
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    // Utilities for Maps SDK for Android (requires Google Play Services)
+    implementation "com.google.maps.android:android-maps-utils:$mapsUtilsVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "com.google.android.gms:play-services-location:$playServicesLocation"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutinesPlayServices"
+    implementation "com.google.firebase:firebase-firestore-ktx:$firestoreVersion"
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+    // Testing
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "io.mockk:mockk:$mockkVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidXjunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
+    androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 }

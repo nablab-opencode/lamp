@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">miMerendero</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCzGtqnND2ZZkFa34PGPHxq1R72MPiNNSg</string>
 </resources>
